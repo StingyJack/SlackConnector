@@ -14,14 +14,13 @@ namespace SlackConnector.Tests.Integration
         {
             // given
             var config = new ConfigReader().GetConfig();
-            if (config.IsConfigured == false) { Assert.Ignore(); }
 
             var slackConnector = new SlackConnector();
             var connection = slackConnector.Connect(config.Slack.ApiToken).Result;
             var message = new BotMessage
             {
                 Text = "Test text for INT test",
-                ChatHub = connection.ConnectedChannels().First(x => x.Name.Equals("#general", StringComparison.InvariantCultureIgnoreCase))
+                ChatHub = connection.ConnectedChannel(config.Slack.TestChannel)
             };
             
             // when

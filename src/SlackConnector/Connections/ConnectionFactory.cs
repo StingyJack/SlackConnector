@@ -1,9 +1,11 @@
 ﻿using SlackConnector.Connections.Clients;
 using SlackConnector.Connections.Clients.Channel;
 using SlackConnector.Connections.Clients.Chat;
+using SlackConnector.Connections.Clients.File;
 using SlackConnector.Connections.Clients.Handshake;
 using SlackConnector.Connections.Sockets;
 using SlackConnector.Connections.Sockets.Messages.Inbound;
+using SlackConnector.Logging;
 
 namespace SlackConnector.Connections
 {
@@ -20,7 +22,7 @@ namespace SlackConnector.Connections
 
         public IWebSocketClient CreateWebSocketClient(string url, ProxySettings proxySettings)
         {
-            return new WebSocketClient(new MessageInterpreter(), url, proxySettings);
+            return new WebSocketClient(new MessageInterpreter(new Logger()), url, proxySettings);
         }
 
         public IHandshakeClient CreateHandshakeClient()
@@ -31,6 +33,11 @@ namespace SlackConnector.Connections
         public IChatClient CreateChatClient()
         {
             return new ChatClient(_requestExecutor);
+        }
+
+        public IFileClient CreateFileClient()
+        {
+            return new FileClient(_requestExecutor);
         }
 
         public IChannelClient CreateChannelClient()
